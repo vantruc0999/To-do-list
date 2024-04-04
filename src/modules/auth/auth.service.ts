@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Request, UnauthorizedException } from '@nestjs/common';
 // import { CreateUserDto } from 'src/users/dto/CreateUser.dto';
 import { UsersService } from 'src/modules/users/users.service';
 import * as bcrypt from 'bcrypt';
@@ -49,11 +49,12 @@ export class AuthService {
             } else {
                 delete user.password;
 
-                const payload = { sub: userAuthDto.id, username: userAuthDto.email };
+                const payload = { sub: userAuthDto.id, email: userAuthDto.email};
+                const accessToken = await this.jwtService.signAsync(payload);
 
                 return {
                     status: HttpStatus.OK,
-                    access_token: await this.jwtService.signAsync(payload),
+                    access_token: accessToken,
                     user: user
                   };
             };

@@ -20,7 +20,7 @@ import { AuthMiddleware } from './middlewares/auth/auth.middleware';
 export class AuthModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes({
-      path: 'auth/register',
+      path: 'todos/create',
       method: RequestMethod.POST,
     });
   }
