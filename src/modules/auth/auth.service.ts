@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
-import { CreateUserDto } from 'src/users/dto/CreateUser.dto';
-import { UsersService } from 'src/users/users.service';
+// import { CreateUserDto } from 'src/users/dto/CreateUser.dto';
+import { UsersService } from 'src/modules/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { AuthDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from '../users/dto/CreateUser.dto';
 
 
 @Injectable()
