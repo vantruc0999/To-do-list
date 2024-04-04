@@ -1,11 +1,12 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn({type: 'bigint'})
+    @PrimaryGeneratedColumn({ type: 'bigint' })
     id: number;
 
-    @Column()
+    @Column({ nullable: true })
     fullName: string;
 
     @Column()

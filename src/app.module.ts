@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/User';
-import { UsersModule } from './users/users.module';
+import { TodosModule } from './todos/todos.module';
+import { TodoInforModule } from './todo_infor/todo_infor.module';
 
 @Module({
   imports: [ TypeOrmModule.forRoot({
@@ -14,7 +15,7 @@ import { UsersModule } from './users/users.module';
     database: 'todo_list',
     entities: [User],
     synchronize: true,
-  }),UsersModule],
+  }),AuthModule, TodosModule, TodoInforModule],
   controllers: [],
   providers: [],
 })
