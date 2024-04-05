@@ -21,7 +21,7 @@ export class AuthService {
 
         if (userExists) {
             throw new HttpException('Email is already registered', HttpStatus.CONFLICT);
-        }
+        } 
 
         const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
         const newUser = await this.usersService.create({
@@ -34,22 +34,22 @@ export class AuthService {
         return { status: HttpStatus.OK, newUser };
     }
 
-    async login(userAuthDto: AuthDto): Promise<any> {
-
-        const user = await this.usersService.findByEmail(userAuthDto.email);
+    async login(request: AuthDto): Promise<any> {
+        const user = await this.usersService.findByEmail(request.email);
 
         if (!user) {
             throw new HttpException('Wrong email or password', HttpStatus.UNAUTHORIZED);
         }
         else {
-            const passwordMatches = await bcrypt.compare(userAuthDto.password, user.password);;
+            const passwordMatches = await bcrypt.compare(request.password, user.password);;
 
             if (!passwordMatches) {
                 throw new HttpException('Wrong email or password', HttpStatus.UNAUTHORIZED);
             } else {
                 delete user.password;
 
-                const payload = { sub: userAuthDto.id, email: userAuthDto.email};
+                const payload = { userId: user.id, email: user.email};
+                
                 const accessToken = await this.jwtService.signAsync(payload);
 
                 return {

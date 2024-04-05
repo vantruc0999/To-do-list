@@ -20,4 +20,8 @@ export class UsersService {
     return await this.userRepository.save(createUserDto);
   }
 
+  async findOneUser(userId: string){
+    const id = Number(userId)
+    return await this.userRepository.findOneBy({id})
+  }
 }

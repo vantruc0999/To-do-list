@@ -1,5 +1,5 @@
 import { Todo } from 'src/modules/todos/entities/Todo';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn} from 'typeorm';
 // import { Todo } from 'src/todos/entities/Todo';
 
 @Entity()
@@ -8,20 +8,21 @@ export class TodoInfor {
   id: number;
 
   @OneToOne(() => Todo, todo => todo.info)
+  @JoinColumn({name: 'todoId'})
   todo: Todo;
 
-  @Column({ nullable: true })
-  description: string;
+  @Column()
+  todoId: number
 
   @Column({ nullable: true })
-  due_date: Date;
+  dueDate: Date;
 
   @Column({ nullable: true })
   status: boolean;
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
-  created_at: Date;
+  createdAt: Date;
 
   @Column({ nullable: true })
-  updated_at: Date;
+  updatedAt: Date;
 }

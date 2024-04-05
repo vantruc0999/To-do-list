@@ -6,19 +6,14 @@ import { TodosModule } from './modules/todos/todos.module';
 import { TodoInforModule } from './modules/todo_infor/todo_infor.module';
 import { Todo } from './modules/todos/entities/Todo';
 import { TodoInfor } from './modules/todo_infor/entities/TodoInfor';
+import { ConfigModule } from '@nestjs/config';
+import { DatabaseModule } from './modules/database/database.module';
 
 @Module({
-  imports: [ TypeOrmModule.forRoot({
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: '123456',
-    database: 'todo_list',
-    entities: [User, Todo, TodoInfor],
-    synchronize: true,
-  }),
-  AuthModule, TodosModule, TodoInforModule],
+  imports: [ ConfigModule.forRoot({
+      isGlobal: true
+    }),
+  AuthModule, TodosModule, TodoInforModule, DatabaseModule],
   controllers: [],
   providers: [],
 })

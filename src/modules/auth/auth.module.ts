@@ -11,7 +11,7 @@ import { AuthMiddleware } from './middlewares/auth/auth.middleware';
     JwtModule.register({
       global: true,
       secret: 'hehhe',
-      signOptions: { expiresIn: '3600s' },
+      signOptions: { expiresIn: '1d' },
     }),
   ],
   controllers: [AuthController],

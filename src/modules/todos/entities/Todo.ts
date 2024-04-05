@@ -21,8 +21,7 @@ export class Todo {
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @OneToOne(() => TodoInfor, { cascade: true })
-  @JoinColumn()
+  @OneToOne(() => TodoInfor, (info) => info.todo )
   info: TodoInfor;
 
   @Column()

@@ -1,7 +1,8 @@
 // User.ts
 // import { Todo} from 'src/todos/entities/Todo';
 import { Todo } from 'src/modules/todos/entities/Todo';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, BeforeInsert } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class User {
@@ -25,4 +26,9 @@ export class User {
 
   @Column({ nullable: true, default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+  
+  // @BeforeInsert() hashPassword() {
+  //   this.password = bcrypt.hash(this.password, 10);
+  //   console.log(this.password);
+  // }
 }
