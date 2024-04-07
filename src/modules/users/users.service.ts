@@ -24,4 +24,8 @@ export class UsersService {
     const id = Number(userId)
     return await this.userRepository.findOneBy({id})
   }
+
+  async getCurrentUser(user: User){
+    return user
+  }
 }

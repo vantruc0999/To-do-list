@@ -1,20 +1,52 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AuthModule } from './modules/auth/auth.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './modules/users/entities/User';
 import { TodosModule } from './modules/todos/todos.module';
 import { TodoInforModule } from './modules/todo_infor/todo_infor.module';
-import { Todo } from './modules/todos/entities/Todo';
-import { TodoInfor } from './modules/todo_infor/entities/TodoInfor';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './modules/database/database.module';
+import { AuthMiddleware } from './middlewares/auth/auth.middleware';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
-  imports: [ ConfigModule.forRoot({
-      isGlobal: true
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
-  AuthModule, TodosModule, TodoInforModule, DatabaseModule],
-  controllers: [],
-  providers: [],
+    AuthModule,
+    TodosModule,
+    TodoInforModule,
+    DatabaseModule,
+    UsersModule
+  ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes(
+      {
+        path: 'users/current-user',
+        method: RequestMethod.GET,
+      },
+      {
+        path: 'todos',
+        method: RequestMethod.GET,
+      },
+      {
+        path: 'todos/create',
+        method: RequestMethod.POST,
+      },
+      {
+        path: 'todos/update/:id',
+        method: RequestMethod.PUT,
+      },
+      {
+        path: 'todos/delete/:id',
+        method: RequestMethod.DELETE,
+      },
+    );
+  }
+}

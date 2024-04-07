@@ -1,6 +1,8 @@
 import { IsBoolean, IsDate, IsDateString, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateToDoDto {
+  id: number
+  
   @IsNotEmpty()
   @IsString()
   title: string;
@@ -8,12 +10,4 @@ export class CreateToDoDto {
   @IsNotEmpty()
   @IsString()
   description: string;
-
-  @IsNotEmpty()
-  @IsDateString()
-  dueDate: Date;
-
-  @IsNotEmpty()
-  @IsBoolean()
-  status: boolean;
 }
