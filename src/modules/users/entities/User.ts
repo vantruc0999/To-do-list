@@ -3,6 +3,7 @@
 import { Todo } from 'src/modules/todos/entities/Todo';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, BeforeInsert } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -19,6 +20,7 @@ export class User {
   email: string;
 
   @Column()
+  @Exclude() 
   password: string;
 
   @Column({ nullable: true, default: () => 'CURRENT_TIMESTAMP' })
@@ -26,9 +28,4 @@ export class User {
 
   @Column({ nullable: true, default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
-  
-  // @BeforeInsert() hashPassword() {
-  //   this.password = bcrypt.hash(this.password, 10);
-  //   console.log(this.password);
-  // }
 }

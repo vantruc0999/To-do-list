@@ -1,6 +1,3 @@
-// Todo.ts
-// import { TodoInfor } from 'src/todo_infor/entities/TodoInfor';
-// import { User } from 'src/users/entities/User';
 import { TodoInfor } from 'src/modules/todo_infor/entities/TodoInfor';
 import { User } from 'src/modules/users/entities/User';
 import {
@@ -21,7 +18,7 @@ export class Todo {
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @OneToOne(() => TodoInfor, (info) => info.todo )
+  @OneToOne(() => TodoInfor, (info) => info.todo, { cascade: true })
   info: TodoInfor;
 
   @Column()

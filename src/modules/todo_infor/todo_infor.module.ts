@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Todo } from '../todos/entities/Todo';
-// import { Todo } from 'src/todos/entities/Todo';
+import { TodoInfor } from './entities/TodoInfor';
+
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Todo])],
+    imports: [TypeOrmModule.forFeature([TodoInfor])],
 })
 export class TodoInforModule {}
