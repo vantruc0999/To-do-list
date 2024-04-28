@@ -1,4 +1,10 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler, HttpStatus, HttpException } from '@nestjs/common';
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+  HttpStatus,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -6,12 +12,14 @@ import { map } from 'rxjs/operators';
 export class TodoResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      map(data => {
+      map((data) => {
         const response = {
           statusCode: HttpStatus.OK,
           data: data,
         };
-        const responseStatusCode = context.switchToHttp().getResponse().statusCode;
+        const responseStatusCode = context
+          .switchToHttp()
+          .getResponse().statusCode;
         if (responseStatusCode !== HttpStatus.OK) {
           response.statusCode = responseStatusCode;
         }

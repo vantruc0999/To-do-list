@@ -20,8 +20,8 @@ export class UsersController {
 
   @Get('/current-user')
   async getCurrentUser(@Request() req) {
-    const user = req.user
-    return this.userService.getCurrentUser(user)
+    const user = req.user;
+    return this.userService.getCurrentUser(user);
   }
 
   @Get('/:id')
