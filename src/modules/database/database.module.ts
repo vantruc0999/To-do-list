@@ -9,7 +9,6 @@ import { TodoInforModule } from '../todo_infor/todo_infor.module';
   imports: [
     TypeOrmModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
-        
         type: 'mysql',
         host: configService.getOrThrow('MYSQL_HOST'),
         port: configService.getOrThrow('MYSQL_PORT'),
@@ -18,10 +17,10 @@ import { TodoInforModule } from '../todo_infor/todo_infor.module';
         database: configService.getOrThrow('MYSQL_DATABASE'),
         autoLoadEntities: true,
         synchronize: configService.getOrThrow('MYSQL_SYNCHRONIZE'),
-        entities: [AuthModule, TodosModule, TodoInforModule]
+        entities: [AuthModule, TodosModule, TodoInforModule],
       }),
-      inject: [ConfigService]
-    })
-  ]
+      inject: [ConfigService],
+    }),
+  ],
 })
 export class DatabaseModule {}

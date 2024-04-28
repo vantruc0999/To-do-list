@@ -1,4 +1,4 @@
-import { IsBoolean, IsDateString, IsNotEmpty} from 'class-validator';
+import { IsBoolean, IsDateString, IsNotEmpty } from 'class-validator';
 
 export class UpdateToDoInforDto {
   @IsNotEmpty()

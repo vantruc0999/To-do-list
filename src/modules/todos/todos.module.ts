@@ -16,6 +16,6 @@ import { TodoResponseInterceptor } from '../../interceptors/todo-interceptors';
       provide: 'TodoInterceptor',
       useClass: TodoResponseInterceptor,
     },
-  ]
+  ],
 })
 export class TodosModule {}
