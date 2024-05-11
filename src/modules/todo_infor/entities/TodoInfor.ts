@@ -6,7 +6,6 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-// import { Todo } from 'src/todos/entities/Todo';
 
 @Entity()
 export class TodoInfor {
@@ -14,21 +13,21 @@ export class TodoInfor {
   id: number;
 
   @OneToOne(() => Todo, (todo) => todo.info)
-  @JoinColumn({ name: 'todoId' })
+  @JoinColumn({ name: 'todo_id' })
   todo: Todo;
 
-  @Column()
-  todoId: number;
+  // @Column({ name: 'todo_id' })
+  // todoId: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'due_date' })
   dueDate: Date;
 
   @Column({ nullable: true })
   status: boolean;
 
-  @Column({ default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @Column({ nullable: true })
+  @Column({ name: 'updated_at', nullable: true })
   updatedAt: Date;
 }
