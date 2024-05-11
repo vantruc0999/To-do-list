@@ -15,7 +15,7 @@ export class Todo {
   id: number;
 
   @ManyToOne(() => User, (user) => user.todos)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @OneToOne(() => TodoInfor, (info) => info.todo, { cascade: true })
@@ -27,11 +27,16 @@ export class Todo {
   @Column({ nullable: true })
   description: string;
 
-  @Column({ nullable: true, default: () => 'CURRENT_TIMESTAMP' })
+  @Column({
+    nullable: true,
+    name: 'created_at',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   createdAt: Date;
 
   @Column({
     nullable: true,
+    name: 'updated_at',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
   })

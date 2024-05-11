@@ -1,8 +1,7 @@
-// User.ts
-// import { Todo} from 'src/todos/entities/Todo';
 import { Todo } from 'src/modules/todos/entities/Todo';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { Token } from 'src/modules/auth/entities/Token';
 
 @Entity()
 export class User {
@@ -12,7 +11,7 @@ export class User {
   @OneToMany(() => Todo, (todo) => todo.user)
   todos: Todo[];
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'full_name' })
   fullName: string;
 
   @Column()
@@ -22,13 +21,21 @@ export class User {
   @Exclude()
   password: string;
 
-  @Column({ nullable: true, default: () => 'CURRENT_TIMESTAMP' })
+  @Column({
+    nullable: true,
+    name: 'created_at',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   createdAt: Date;
 
   @Column({
     nullable: true,
+    name: 'updated_at',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
+
+  @OneToMany(() => Token, (token) => token.user)
+  tokens: Token[];
 }
