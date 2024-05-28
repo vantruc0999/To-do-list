@@ -7,23 +7,27 @@ import {
 // import { CreateUserDto } from 'src/users/dto/CreateUser.dto';
 import { UsersService } from 'src/modules/users/users.service';
 import * as bcrypt from 'bcrypt';
-import { AuthDto } from './dto/auth.dto';
+import { AuthDto } from '../dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from '../users/dto/CreateUser.dto';
+import { CreateUserDto } from '../../users/dto/CreateUser.dto';
 import { ConfigService } from '@nestjs/config';
-import { Token } from './entities/Token';
+import { Token } from '../entities/Token';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as ms from 'ms';
-import { User } from '../users/entities/User';
+import { User } from '../../users/entities/User';
 import { compare } from 'bcrypt';
+import { TokenService } from './token.service';
+import { EmailsService } from 'src/modules/emails/services/email.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private tokenService: TokenService,
     private readonly configService: ConfigService,
+    private readonly emailsService: EmailsService,
 
     @InjectRepository(Token)
     private readonly tokenRepository: Repository<Token>,
@@ -32,12 +36,12 @@ export class AuthService {
   async register(createUserDto: CreateUserDto): Promise<any> | null {
     const userExists = await this.usersService.findByEmail(createUserDto.email);
 
-    if (userExists) {
-      throw new HttpException(
-        'Email is already registered',
-        HttpStatus.CONFLICT,
-      );
-    }
+    // if (userExists) {
+    //   throw new HttpException(
+    //     'Email is already registered',
+    //     HttpStatus.CONFLICT,
+    //   );
+    // }
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const newUser = await this.usersService.create({
@@ -46,6 +50,8 @@ export class AuthService {
     });
 
     delete newUser.password;
+
+    await this.emailsService.sendRegisterConfirmationEmail(newUser);
 
     return { status: HttpStatus.OK, newUser };
   }
@@ -58,8 +64,8 @@ export class AuthService {
 
     const payload = { id: user.id, email: user.email };
 
-    const accessToken = await this.generateAccessToken(payload);
-    const refreshToken = await this.generateRefreshToken(payload);
+    const accessToken = await this.tokenService.generateAccessToken(payload);
+    const refreshToken = await this.tokenService.generateRefreshToken(payload);
 
     const expiresAt = new Date(
       Date.now() +
@@ -74,24 +80,6 @@ export class AuthService {
       user,
       tokens: { accessToken: accessToken, refreshToken: refreshToken },
     };
-  }
-
-  private generateAccessToken(payload: {
-    id: number;
-    email: string;
-  }): Promise<string> {
-    return this.jwtService.signAsync(payload, {
-      expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'),
-    });
-  }
-
-  private generateRefreshToken(payload: {
-    id: number;
-    email: string;
-  }): Promise<string> {
-    return this.jwtService.signAsync(payload, {
-      expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'),
-    });
   }
 
   async validateUser(email: string, password: string): Promise<User> {

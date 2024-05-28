@@ -83,19 +83,19 @@ export class TodosService {
         id: todoId,
         user: user,
       },
-      relations: ['info']
+      relations: ['info'],
     });
 
     if (!todo) {
       throw new HttpException('Todo not found.', HttpStatus.NOT_FOUND);
     }
 
-    const todoInfor = todo.info
+    const todoInfor = todo.info;
 
-    if(todoInfor){
-      await this.todoInforRepository.remove(todoInfor)
+    if (todoInfor) {
+      await this.todoInforRepository.remove(todoInfor);
     }
-    
+
     await this.todoRepository.remove(todo);
   }
 }
