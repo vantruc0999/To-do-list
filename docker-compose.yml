@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  to-do-list-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+    volumes:
+      - ./src:/usr/src/app/src
+    networks:
+      - todo-list-network
+
+  todo-list-db:
+    image: mysql:8.0.32
+    container_name: todo-list-db
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    networks:
+      - todo-list-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin-todo-list-server
+    depends_on:
+      - todo-list-db
+    environment:
+      - PMA_HOST=todo-list-db
+      - PMA_PORT=3306
+      - PMA_ARBITRARY=1
+    ports:
+      - 8082:80
+    networks:
+      - todo-list-network
+      
+  redis:
+    image: redis:latest
+    ports:
+      - 6380:6379
+    networks:
+      - todo-list-network
+
+networks:
+  todo-list-network:
+    driver: bridge
