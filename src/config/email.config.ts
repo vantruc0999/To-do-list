@@ -20,7 +20,7 @@ export const emailConfig: MailerAsyncOptions = {
       from: `"no-reply" <${configService.get('MAIL_FROM')}>`,
     },
     template: {
-      dir: join(__dirname, '../../modules/emails/templates'),
+      dir: join(__dirname, '../modules/emails/templates'),
       adapter: new HandlebarsAdapter(),
       options: {
         strict: true,

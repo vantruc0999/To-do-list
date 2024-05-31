@@ -10,8 +10,8 @@ export class EmailsConsumer {
 
   constructor(private mailerService: MailerService) {}
 
-  @Process('sendRegisterConfirmationEmailQueue')
-  async sendConfirmRegistrationEmail(
+  @Process('sendHelloMail')
+  async sendHelloMail(
     job: Job<{
       to: string;
       templatePath: string;
@@ -20,14 +20,13 @@ export class EmailsConsumer {
   ): Promise<void> {
     try {
       const { to: userEmail, templatePath } = job.data;
-      const { name, confirmEmailLink } = job.data.context;
+      const { name } = job.data.context;
       await this.mailerService.sendMail({
         to: userEmail,
-        subject: 'Confirm your email',
+        subject: 'This is welcome email',
         template: templatePath,
         context: {
           name,
-          confirmEmailLink,
         },
       });
 

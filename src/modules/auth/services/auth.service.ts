@@ -36,12 +36,12 @@ export class AuthService {
   async register(createUserDto: CreateUserDto): Promise<any> | null {
     const userExists = await this.usersService.findByEmail(createUserDto.email);
 
-    // if (userExists) {
-    //   throw new HttpException(
-    //     'Email is already registered',
-    //     HttpStatus.CONFLICT,
-    //   );
-    // }
+    if (userExists) {
+      throw new HttpException(
+        'Email is already registered',
+        HttpStatus.CONFLICT,
+      );
+    }
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const newUser = await this.usersService.create({
@@ -51,7 +51,7 @@ export class AuthService {
 
     delete newUser.password;
 
-    await this.emailsService.sendRegisterConfirmationEmail(newUser);
+    await this.emailsService.sendHelloMail(newUser);
 
     return { status: HttpStatus.OK, newUser };
   }
