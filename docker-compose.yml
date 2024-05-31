@@ -6,6 +6,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - '3000:3000'
+    container_name: to-do-list-api
+    depends_on:
+      - redis
     environment:
       - PORT=3000
       - NODE_ENV=development

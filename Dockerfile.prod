@@ -6,7 +6,7 @@ COPY . .
 
 RUN npm install
 
-RUN npn run build
+RUN npm run build
 
 RUN rm -rf  ./src
 
